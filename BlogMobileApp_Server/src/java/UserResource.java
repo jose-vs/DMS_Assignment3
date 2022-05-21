@@ -52,7 +52,6 @@ public class UserResource {
 //        buffer.append("</users>");
 //        return buffer.toString();
 //    }
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{user}")

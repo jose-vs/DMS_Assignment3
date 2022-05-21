@@ -94,8 +94,9 @@ public class Blog implements Serializable {
 
     public JsonObject getJSONObject() {
         JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
+        jsonBuilder.add("id", id);
         jsonBuilder.add("title", title);
-        jsonBuilder.add("author", content);
+        jsonBuilder.add("content", content);
         jsonBuilder.add("author", author);
         jsonBuilder.add("dateCreated", getDateCreatedString());
         return jsonBuilder.build();

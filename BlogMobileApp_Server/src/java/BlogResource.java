@@ -8,7 +8,9 @@ import jakarta.json.JsonObjectBuilder;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -20,7 +22,6 @@ import java.util.Collection;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author jcvsa
@@ -52,20 +53,46 @@ public class BlogResource {
 //        buffer.append("</blogs>");
 //        return buffer.toString();
 //    }
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllBlogsJSON() { 
-        JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();        
+    public String getAllBlogsJSON() {
+        JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-        
+
         Collection<Blog> allBlogs = blogBean.getAllBlogs();
         for (Blog blog : allBlogs) {
             arrayBuilder.add(blog.getJSONObject());
         }
         JsonObject json = jsonBuilder.add("blogs", arrayBuilder).build();
-        
+
         return json.toString();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{author}")
+    public String getUserBlogs(@PathParam("author") String author) {
+        JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+
+        Collection<Blog> blogs = blogBean.getUserBlogs(author);
+        for (Blog blog : blogs) {
+            arrayBuilder.add(blog.getJSONObject());
+        }
+        JsonObject json = jsonBuilder.add("blogs", arrayBuilder).build();
+
+        return json.toString();
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Path("{id}")
+    public void updateBlog(MultivaluedMap<String, String> formParams) {        
+        BlogPK blogPK = new BlogPK(Integer.parseInt(formParams.getFirst("id")));
+        String blogTitle = formParams.getFirst("title");
+        String blogContent = formParams.getFirst("content");
+
+        blogBean.updateBlog(blogTitle, blogContent, blogPK);
     }
 
     @POST
@@ -77,4 +104,3 @@ public class BlogResource {
         blogBean.addBlog(title, content, author);
     }
 }
-

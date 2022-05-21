@@ -93,6 +93,7 @@ public class User implements Serializable {
         jsonBuilder.add("name", name);
         jsonBuilder.add("email", email);
         jsonBuilder.add("password", password);
+        
         return jsonBuilder.build();
     }
 }
