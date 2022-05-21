@@ -6,7 +6,6 @@
 import java.util.List;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
-import jakarta.jws.WebService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -34,6 +33,17 @@ public class UserBean {
         Query query = entityManager.createQuery(jpqlCommand);
         query.setParameter("username", username);
         return query.getResultList();
+    }
+    
+    public User updateUser(String uname, String name, String email, String password) {
+        UserPK primaryKey = new UserPK(uname);
+        User userEdit = (User) entityManager.find(User.class, primaryKey);       
+        userEdit.setName(name);
+        userEdit.setEmail(email);
+        userEdit.setPassword(password);
+        entityManager.merge(userEdit);
+
+        return userEdit;
     }
 
     public List<User> getAllUsers() {

@@ -27,8 +27,9 @@ public class BlogBean {
         return newBlog;
     }
 
-    public Blog updateBlog(String title, String content, BlogPK pk) {
-        Blog blogEdit = (Blog) entityManager.find(Blog.class, pk);       
+    public Blog updateBlog(String title, String content, Integer id) {
+        BlogPK primaryKey = new BlogPK(id);
+        Blog blogEdit = (Blog) entityManager.find(Blog.class, primaryKey);       
         blogEdit.setContent(content);
         blogEdit.setTitle(title);
         entityManager.merge(blogEdit);
@@ -54,6 +55,9 @@ public class BlogBean {
         query.setParameter("author", author);
 
         return query.getResultList();
-
+    }
+    
+    public void deleteBlog(Integer id) {
+       entityManager.remove(getBlog(id));
     }
 }

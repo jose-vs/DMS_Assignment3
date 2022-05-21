@@ -12,6 +12,7 @@ import jakarta.json.JsonObjectBuilder;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -81,6 +82,17 @@ public class UserResource {
         JsonObject json = jsonBuilder.add("users", arrayBuilder).build();
 
         return json.toString();
+    }
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Path("{username}")
+    public void updateUser(MultivaluedMap<String, String> formParams, @PathParam("username") String username ) { 
+        String name = formParams.getFirst("name");
+        String email = formParams.getFirst("email");
+        String password = formParams.getFirst("password");
+
+        usersBean.updateUser(username, name, email, password);
     }
 
     @POST

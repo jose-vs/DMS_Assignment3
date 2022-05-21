@@ -6,6 +6,7 @@ import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
@@ -87,12 +88,18 @@ public class BlogResource {
     @PUT
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Path("{id}")
-    public void updateBlog(MultivaluedMap<String, String> formParams) {        
-        BlogPK blogPK = new BlogPK(Integer.parseInt(formParams.getFirst("id")));
+    public void updateBlog(MultivaluedMap<String, String> formParams, @PathParam("id") Integer blogPK) {
         String blogTitle = formParams.getFirst("title");
         String blogContent = formParams.getFirst("content");
 
         blogBean.updateBlog(blogTitle, blogContent, blogPK);
+    }
+
+    @DELETE
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("{id}")
+    public void deleteBlog(@PathParam("id") Integer blogPK) {
+        blogBean.deleteBlog(blogPK);
     }
 
     @POST
