@@ -1,71 +1,66 @@
-package com.example.blogmobileapp_app.Tasks;
+package com.example.blogmobileapp_app.api;
 
-import static com.example.blogmobileapp_app.env.envVariables.API_URL;
+import static com.example.blogmobileapp_app.data.Variables.API_URL;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+
+import com.example.blogmobileapp_app.screens.Login.LoginRequest;
+import com.example.blogmobileapp_app.screens.Main.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
-public class LoginUser extends AsyncTask<String, Void, Integer> {
+public class LoginApiService extends AsyncTask<String, Void, Integer> {
 
-    private boolean loggedIn;
-
+    private boolean passwordMatched;
+    private LoginRequest loginRequest;
 
     @SuppressLint("StaticFieldLeak")
     private Context context;
 
-    public LoginUser(Context context) {
+    public LoginApiService(LoginRequest loginRequest, Context context) {
+        this.loginRequest = loginRequest;
         this.context = context;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    protected Integer doInBackground(String... strings) {
+    protected Integer doInBackground(String... params) {
 
-        String username = strings[0];
         int responseCode = 0;
 
         try {
-            URL url = new URL(API_URL + "/users/"+username);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            URL loginUrl = new URL(params[0]);
+            HttpURLConnection conn
+                    = (HttpURLConnection) loginUrl.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Accept", "application/json");
-            Log.d("Bruh", strings[0]+".."+url);
+
             InputStream inputStream = conn.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line;
+            String user;
             StringBuilder sb = new StringBuilder();
-            while ((line = bufferedReader.readLine()) != null) {
-                Log.d("line", line);
-                sb.append(line);
+            while ((user = bufferedReader.readLine()) != null) {
+                System.out.println("user: " +  user);
+                sb.append(user);
             }
 
             JSONObject json = new JSONObject(sb.toString());
@@ -78,21 +73,23 @@ public class LoginUser extends AsyncTask<String, Void, Integer> {
             conn.disconnect();
 
             if (json != null) {
-                Log.d("some message", strings[0]+":"+strings[1]);
                 try {
                     JSONArray jsonArray = (JSONArray) json.get("users");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                         String password = (String) jsonObject.get("password");
-                        if (password.equals(strings[1])) {
-                            Log.d("Password is ", "correct");
-                            loggedIn = true;
+
+                        System.out.println(password);
+
+                        if (password.equals(this.loginRequest.getPassword())) {
+                            passwordMatched = true;
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (ProtocolException e) {
@@ -103,22 +100,19 @@ public class LoginUser extends AsyncTask<String, Void, Integer> {
             e.printStackTrace();
         }
         return responseCode;
-
     }
 
-//    protected void onPostExecute(Integer responseCode) {
-//        String msg;
-//        Log.d("some login", "this.success" + success );
-//        if ((responseCode >= 200) && (responseCode <= 299) && success) {
-//            msg = "Login was successful";
-//            Intent myIntent = new Intent(mContext, MainActivity.class);
-//            myIntent.putExtra("username", username);
-//            ActivityCompat.finishAffinity((Activity) mContext);
-//            mContext.startActivity(myIntent);
-//        } else {
-//            msg = "Login failed";
-//        }
-//        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
-//    }
-
+    protected void onPostExecute(Integer responseCode) {
+        String msg;
+        if ((responseCode >= 200) && (responseCode <= 299) && passwordMatched) {
+            msg = "Login was successful";
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.putExtra("username", this.loginRequest.getUsername());
+            ActivityCompat.finishAffinity((Activity) context);
+            context.startActivity(intent);
+        } else {
+            msg = "Login failed";
+        }
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
 }
