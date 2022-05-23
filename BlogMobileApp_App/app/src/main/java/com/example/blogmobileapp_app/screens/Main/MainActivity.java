@@ -1,37 +1,29 @@
 package com.example.blogmobileapp_app.screens.Main;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.blogmobileapp_app.R;
-import com.example.blogmobileapp_app.components.BlogViewFragment;
+import com.example.blogmobileapp_app.screens.Blog.BlogActivity;
 
-public class MainActivity extends AppCompatActivity  {
-
+public class MainActivity extends AppCompatActivity {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState == null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            BlogViewFragment fragment = new BlogViewFragment();
-            transaction.replace(R.id.testFragment, fragment);
-            transaction.commit();
-        }
+        System.out.println("Main" + (String) getIntent().getStringExtra("username"));
 
-        String username;
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                username = null;
-            } else {
-                username = extras.getString("username");
-            }
-        } else {
-            username = (String) savedInstanceState.getSerializable("username");
-        }
+        Button button = (Button) this.findViewById(R.id.writeBlog);
+        button.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, BlogActivity.class);
+            intent.putExtra("username", getIntent().getStringExtra("username"));
+            startActivity(intent);
+        });
     }
 }

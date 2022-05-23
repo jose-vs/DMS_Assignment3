@@ -8,14 +8,21 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.blogmobileapp_app.R;
+import com.example.blogmobileapp_app.data.model.BlogRequest;
 
 
 public class BlogViewAdapter extends RecyclerView.Adapter<BlogViewAdapter.ViewHolder > {
     private static final String TAG = "BlogViewAdapter";
 
-    private String[] mDataSet;
+    private BlogRequest[] data;
 
-    // BEGIN_INCLUDE(recyclerViewSampleViewHolder)
+    /**
+     * Initialize the dataset of the Adapter.
+     */
+    public BlogViewAdapter(BlogRequest[] data) {
+        this.data = data;
+    }
+
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
@@ -35,14 +42,7 @@ public class BlogViewAdapter extends RecyclerView.Adapter<BlogViewAdapter.ViewHo
     }
     // END_INCLUDE(recyclerViewSampleViewHolder)
 
-    /**
-     * Initialize the dataset of the Adapter.
-     *
-     * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
-     */
-    public BlogViewAdapter(String[] dataSet) {
-        mDataSet = dataSet;
-    }
+
 
     // BEGIN_INCLUDE(recyclerViewOnCreateViewHolder)
     // Create new views (invoked by the layout manager)
@@ -64,13 +64,12 @@ public class BlogViewAdapter extends RecyclerView.Adapter<BlogViewAdapter.ViewHo
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.getTextView().setText(mDataSet[position]);
+        viewHolder.getTextView().setText(data[position].getTitle());
     }
-    // END_INCLUDE(recyclerViewOnBindViewHolder)
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataSet.length;
+        return 0;
     }
+    // END_INCLUDE(recyclerViewOnBindViewHolder)
 }

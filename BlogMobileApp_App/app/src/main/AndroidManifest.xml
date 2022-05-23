@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BlogMobileApp_App"
         tools:targetApi="31">
+        <activity android:name=".screens.Blog.BlogActivity" />
         <activity android:name=".screens.Main.MainActivity" />
         <activity android:name=".screens.Register.RegisterActivity" />
         <activity

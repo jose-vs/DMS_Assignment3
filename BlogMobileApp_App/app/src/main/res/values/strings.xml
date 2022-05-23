@@ -8,6 +8,10 @@
 
 
     <string name="element_text">Element</string>
+    <string name="enter_title_of_blog">enter title of blog</string>
+    <string name="enter_blog_content">enter blog content</string>
+
+    <string name="submit">submit</string>
 
 
 </resources>
