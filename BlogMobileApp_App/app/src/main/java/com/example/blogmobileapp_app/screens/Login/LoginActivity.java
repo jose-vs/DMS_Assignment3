@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,8 +15,8 @@ import android.widget.Toast;
 
 import com.example.blogmobileapp_app.R;
 import com.example.blogmobileapp_app.api.LoginApiService;
+import com.example.blogmobileapp_app.data.model.LoginRequest;
 import com.example.blogmobileapp_app.screens.Register.RegisterActivity;
-import com.example.blogmobileapp_app.utils.LoginUser;
 
 public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;

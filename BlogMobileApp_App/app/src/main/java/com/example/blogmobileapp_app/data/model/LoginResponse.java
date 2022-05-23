@@ -1,4 +1,4 @@
-package com.example.blogmobileapp_app.screens.Login;
+package com.example.blogmobileapp_app.data.model;
 
 import java.io.Serializable;
 

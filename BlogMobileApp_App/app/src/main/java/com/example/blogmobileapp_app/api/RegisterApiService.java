@@ -1,19 +1,16 @@
 package com.example.blogmobileapp_app.api;
 
-import static com.example.blogmobileapp_app.data.Variables.API_URL;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
 import com.example.blogmobileapp_app.screens.Login.LoginActivity;
-import com.example.blogmobileapp_app.screens.Register.RegisterRequest;
+import com.example.blogmobileapp_app.data.model.RegisterRequest;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -38,7 +35,6 @@ public class RegisterApiService extends AsyncTask<String, Void, Integer> {
     @Override
     protected Integer doInBackground(String... params) {
 
-        System.out.println(this.registerRequest.getName());
         int responseCode = 0;
 
         try {
@@ -74,9 +70,11 @@ public class RegisterApiService extends AsyncTask<String, Void, Integer> {
         return responseCode;
 
     }
+
     @Override
     protected void onPostExecute(Integer responseCode) {
         super.onPostExecute(responseCode);
+
         String msg;
         if ((responseCode >= 200) && (responseCode <= 299)) {
             msg = "Account creation was successful";

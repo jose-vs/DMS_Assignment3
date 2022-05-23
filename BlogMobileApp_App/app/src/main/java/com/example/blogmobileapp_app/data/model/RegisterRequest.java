@@ -1,4 +1,4 @@
-package com.example.blogmobileapp_app.screens.Register;
+package com.example.blogmobileapp_app.data.model;
 
 public class RegisterRequest {
 

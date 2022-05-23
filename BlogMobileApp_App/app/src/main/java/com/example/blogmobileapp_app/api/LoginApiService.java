@@ -1,18 +1,15 @@
 package com.example.blogmobileapp_app.api;
 
-import static com.example.blogmobileapp_app.data.Variables.API_URL;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
-import com.example.blogmobileapp_app.screens.Login.LoginRequest;
+import com.example.blogmobileapp_app.data.model.LoginRequest;
 import com.example.blogmobileapp_app.screens.Main.MainActivity;
 
 import org.json.JSONArray;
@@ -102,7 +99,10 @@ public class LoginApiService extends AsyncTask<String, Void, Integer> {
         return responseCode;
     }
 
+    @Override
     protected void onPostExecute(Integer responseCode) {
+        super.onPostExecute(responseCode);
+
         String msg;
         if ((responseCode >= 200) && (responseCode <= 299) && passwordMatched) {
             msg = "Login was successful";

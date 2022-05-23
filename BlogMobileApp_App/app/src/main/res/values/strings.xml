@@ -7,4 +7,7 @@
     <string name="title_activity_login">LoginActivity</string>
 
 
+    <string name="element_text">Element</string>
+
+
 </resources>

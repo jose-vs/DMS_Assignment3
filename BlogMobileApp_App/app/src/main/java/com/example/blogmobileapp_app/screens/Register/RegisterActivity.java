@@ -4,7 +4,6 @@ import static com.example.blogmobileapp_app.data.Variables.API_URL;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,8 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.blogmobileapp_app.R;
-import com.example.blogmobileapp_app.api.LoginApiService;
 import com.example.blogmobileapp_app.api.RegisterApiService;
+import com.example.blogmobileapp_app.data.model.RegisterRequest;
 
 public class RegisterActivity extends AppCompatActivity {
 
